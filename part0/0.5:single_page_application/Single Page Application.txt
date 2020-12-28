@@ -1,0 +1,32 @@
+title Single Page Application
+
+Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
+Server->Browser: HTML-code
+Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+Server->Browser: main.css
+Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+Server->Browser: main.js
+note over Browser: 
+browser starts executing js-code
+that requests data.json from server
+end note
+
+Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+Server->Browser: [{"content":"hello","date":"2020-12-27T11:27:04.078Z"},...]
+
+note over Browser:
+browser executes the event handler
+that renders notes to display
+end note
+
+note over Browser:
+when user create a new note in SPA
+end note 
+
+Browser->Server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+Server->Browser: Status code 201 created, {"message":"note created"}
+
+note over Browser:
+browser executes the js-code that it had fetched from the server
+and renders notes to display
+end note
