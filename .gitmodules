@@ -1,0 +1,9 @@
+[submodule "obscure-harbor-55907"]
+	path = obscure-harbor-55907
+	url = https://git.heroku.com/obscure-harbor-55907.git
+[submodule "cryptic-lowlands-96767"]
+	path = cryptic-lowlands-96767
+	url = https://git.heroku.com/cryptic-lowlands-96767.git
+[submodule "deployedApp"]
+	path = deployedApp
+	url = https://git.heroku.com/cryptic-lowlands-96767.git
