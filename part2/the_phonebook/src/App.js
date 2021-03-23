@@ -51,18 +51,27 @@ const App = () => {
         })
         .catch((error) => {
           setErrorMessage(
-            `Information of ${personToUpdate.name} has already been removed from server`
+            `Information of ${changedPerson.name} has already been removed from server`
           );
           setTimeout(() => setErrorMessage(""), 5000);
         });
     } else {
-      phonebookService.create(newPerson).then((returnedPerson) => {
-        setSuccessMessage(`Added ${returnedPerson.name}`);
-        setTimeout(() => setSuccessMessage(""), 5000);
-        setPersons(persons.concat(returnedPerson));
-        setNewNumber("");
-        setNewName("");
-      });
+      phonebookService
+        .create(newPerson)
+        .then((returnedPerson) => {
+          setSuccessMessage(`Added ${returnedPerson.name}`);
+          setTimeout(() => setSuccessMessage(""), 5000);
+          setPersons(persons.concat(returnedPerson));
+          setNewNumber("");
+          setNewName("");
+        })
+        .catch((error) => {
+          setErrorMessage(error.response.data.error);
+          setTimeout(() => setErrorMessage(""), 5000);
+          setNewNumber("");
+          setNewName("");
+          console.log(error.response.data);
+        });
     }
   };
 
