@@ -17,7 +17,7 @@ const getNonSensitiveEntries = (): NonSensitivePatientEntry[] => {
 };
 
 const getEntry = (id: string): Patient | undefined => {
-  return patientsData.find((patient) => patient.id === id);
+  return patientsData.find((patient) => id === patient.id);
 };
 
 const addPatientEntry = (entry: NewPatientEntry): Patient => {
