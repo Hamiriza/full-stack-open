@@ -4,6 +4,7 @@ import { Patient } from "../../types";
 import patientService from "../../services/patients";
 import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
+import EntryDetails from "./EntryDetails";
 
 const PatientView = () => {
   const match = useMatch("/patients/:id");
@@ -36,6 +37,13 @@ const PatientView = () => {
       </h1>
       <div>ssn: {patient.ssn}</div>
       <div>occupation: {patient.occupation}</div>
+
+      <h2>entries</h2>
+      <div>
+        {patient.entries.map((entry, idx) => {
+          return <EntryDetails key={idx} entry={entry} />;
+        })}
+      </div>
     </div>
   );
 };

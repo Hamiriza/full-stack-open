@@ -1,4 +1,4 @@
-import { NewPatientEntry, Gender } from "./types";
+import { NewPatientEntry, Gender, Entry } from "./types";
 
 const isDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
@@ -63,7 +63,8 @@ export const toNewPatientEntry = (object: unknown): NewPatientEntry => {
     "dateOfBirth" in object &&
     "ssn" in object &&
     "gender" in object &&
-    "occupation" in object
+    "occupation" in object &&
+    "entries" in object
   ) {
     const newEntry: NewPatientEntry = {
       name: parseName(object.name),
@@ -71,7 +72,7 @@ export const toNewPatientEntry = (object: unknown): NewPatientEntry => {
       ssn: parseSSN(object.ssn),
       gender: parseGender(object.gender),
       occupation: parseOccupation(object.occupation),
-      entries: [],
+      entries: object.entries as Entry[],
     };
 
     return newEntry;
