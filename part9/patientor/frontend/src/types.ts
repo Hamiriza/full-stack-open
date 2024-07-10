@@ -42,7 +42,7 @@ export interface HealthCheckEntry extends BaseEntry {
 
 export interface OccupationalHealthcareEntry extends BaseEntry {
   type: "OccupationalHealthcare";
-  employeeName: string;
+  employerName: string;
   sickLeave: SickLeave;
 }
 

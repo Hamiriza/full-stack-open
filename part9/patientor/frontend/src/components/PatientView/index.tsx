@@ -25,7 +25,7 @@ const PatientView = () => {
 
     fetchPatient();
     fetchDiagnoses();
-  }, [match, patient]);
+  }, []);
 
   if (!patient) {
     return <div>Not found</div>;
