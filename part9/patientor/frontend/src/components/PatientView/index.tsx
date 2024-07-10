@@ -1,7 +1,8 @@
 import { useMatch } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Patient } from "../../types";
+import { Diagnosis, Patient } from "../../types";
 import patientService from "../../services/patients";
+import diagnosisService from "../../services/diagnoses";
 import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 import EntryDetails from "./EntryDetails";
@@ -9,6 +10,7 @@ import EntryDetails from "./EntryDetails";
 const PatientView = () => {
   const match = useMatch("/patients/:id");
   const [patient, setPatient] = useState<Patient>();
+  const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -16,7 +18,13 @@ const PatientView = () => {
       setPatient(patient);
     };
 
+    const fetchDiagnoses = async () => {
+      const diagnoses = await diagnosisService.getAll();
+      setDiagnoses(diagnoses);
+    };
+
     fetchPatient();
+    fetchDiagnoses();
   }, [match, patient]);
 
   if (!patient) {
@@ -41,7 +49,7 @@ const PatientView = () => {
       <h2>entries</h2>
       <div>
         {patient.entries.map((entry, idx) => {
-          return <EntryDetails key={idx} entry={entry} />;
+          return <EntryDetails key={idx} entry={entry} diagnoses={diagnoses} />;
         })}
       </div>
     </div>
