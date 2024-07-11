@@ -1,7 +1,7 @@
 import express from "express";
 import patientsService from "../services/patientsService";
 import { NonSensitivePatientEntry, Patient } from "../types";
-import { toNewPatientEntry } from "../utils";
+import { toNewEntry, toNewPatientEntry } from "../utils";
 
 const router = express.Router();
 
@@ -21,6 +21,21 @@ router.post("/", (req, res) => {
   const addedEntry = patientsService.addPatientEntry(newPatientEntry);
 
   res.json(addedEntry);
+});
+
+router.post("/:id/entries", (req, res) => {
+  try {
+    const newEntry = toNewEntry(req.body);
+    const addedEntry = patientsService.addEntry(req.params.id, newEntry);
+
+    return res.json(addedEntry);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return res.status(400).json({ error: error.message });
+    } else {
+      return res.status(400).json({ error: "Unknown error occured" });
+    }
+  }
 });
 
 export default router;
