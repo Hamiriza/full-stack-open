@@ -12,7 +12,7 @@ import {
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-import { PatientFormValues, Patient } from "../../types";
+import { PatientFormValues, Patient, PatientWithoutId } from "../../types";
 import AddPatientModal from "../AddPatientModal";
 
 import HealthRatingBar from "../HealthRatingBar";
@@ -37,7 +37,11 @@ const PatientListPage = ({ patients, setPatients }: Props) => {
 
   const submitNewPatient = async (values: PatientFormValues) => {
     try {
-      const patient = await patientService.create(values);
+      const newPatientEntry = {
+        ...values,
+        entries: [],
+      } as PatientWithoutId;
+      const patient = await patientService.create(newPatientEntry);
       setPatients(patients.concat(patient));
       setModalOpen(false);
     } catch (e: unknown) {

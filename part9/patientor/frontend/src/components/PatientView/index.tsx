@@ -6,11 +6,24 @@ import diagnosisService from "../../services/diagnoses";
 import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 import EntryDetails from "./EntryDetails";
+import EntryForm from "./EntryForm";
+import { Button } from "@mui/material";
+
+interface VisibleButtons {
+  hospital: boolean;
+  occupationalCheck: boolean;
+  healthCheck: boolean;
+}
 
 const PatientView = () => {
   const match = useMatch("/patients/:id");
   const [patient, setPatient] = useState<Patient>();
   const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
+  const [visible, setVisible] = useState<VisibleButtons>({
+    hospital: false,
+    occupationalCheck: false,
+    healthCheck: false,
+  });
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -23,9 +36,9 @@ const PatientView = () => {
       setDiagnoses(diagnoses);
     };
 
-    fetchPatient();
-    fetchDiagnoses();
-  }, []);
+    void fetchPatient();
+    void fetchDiagnoses();
+  }, [match, visible, setVisible]);
 
   if (!patient) {
     return <div>Not found</div>;
@@ -45,6 +58,94 @@ const PatientView = () => {
       </h1>
       <div>ssn: {patient.ssn}</div>
       <div>occupation: {patient.occupation}</div>
+
+      <div
+        style={{
+          padding: "10px",
+          display: "flex",
+          flexDirection: "row",
+          columnGap: "12px",
+        }}
+      >
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            setVisible({
+              hospital: false,
+              occupationalCheck: false,
+              healthCheck: true,
+            });
+          }}
+        >
+          Add Health Check Entry
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            setVisible({
+              hospital: false,
+              occupationalCheck: true,
+              healthCheck: false,
+            });
+          }}
+        >
+          Add Occupational Check Entry
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            setVisible({
+              hospital: true,
+              occupationalCheck: false,
+              healthCheck: false,
+            });
+          }}
+        >
+          Add Hospital Entry
+        </Button>
+      </div>
+      {visible.healthCheck && (
+        <EntryForm
+          patientId={patient.id}
+          type="HealthCheck"
+          callback={() => {
+            setVisible({
+              ...visible,
+              healthCheck: false,
+            });
+          }}
+          diagnoses={diagnoses}
+        />
+      )}
+      {visible.hospital && (
+        <EntryForm
+          patientId={patient.id}
+          type="Hospital"
+          callback={() => {
+            setVisible({
+              ...visible,
+              hospital: false,
+            });
+          }}
+          diagnoses={diagnoses}
+        />
+      )}
+      {visible.occupationalCheck && (
+        <EntryForm
+          patientId={patient.id}
+          type="OccupationalHealthcare"
+          callback={() => {
+            setVisible({
+              ...visible,
+              occupationalCheck: false,
+            });
+          }}
+          diagnoses={diagnoses}
+        />
+      )}
 
       <h2>entries</h2>
       <div>
